@@ -10,6 +10,18 @@ terraform {
   }
 }
 
+module "service-1" {
+  source        = "../../modules/dummy-product"
+  external-port = local.ports["service1.example.com"]
+  deployment-id = "service-1"
+}
+
+module "service-2" {
+  source        = "../../modules/dummy-product"
+  external-port = local.ports["service2.example.com"]
+  deployment-id = "service-2"
+}
+
 resource "local_file" "nginx-config" {
   content  = local.nginx_config
   filename = var.nginx-config-path
@@ -28,13 +40,4 @@ resource "local_file" "nginx-config" {
   }
 }
 
-module "dummy1" {
-  source        = "../../modules/dummy1"
-  external-port = local.services["service1.example.com"].local-port
-}
-
-module "dummy2" {
-  source        = "../../modules/dummy2"
-  external-port = local.services["service2.example.com"].local-port
-}
 
